@@ -9,10 +9,25 @@
 <body>
     <form method="POST">
         {% if user.is_authenticated %}
-            Hello {{user.username}}
+            <!-- Hello {{user.username}} -->
+            <h2>Here is the list of Items</h2>
+            {% for item in items %}
+                {{ item }}
+                <div class="view overlay">
+                    <img src="{{ item.image.url }}" class="card-img-top" 
+                      alt="">
+                </div>
+               
+            {% endfor %}
+    
+
         {% else %}
             You are not loggedin
         {% endif %}
+
+        
+
     </form>
+    <a href="{% url 'logout' %}">Logout</a>
 </body>
 </html>

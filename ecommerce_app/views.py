@@ -13,5 +13,5 @@ def register_request(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('register'))
+            return redirect(reverse('login'))
     return render (request=request, template_name="accounts/register.html",context={"register_form":form})
