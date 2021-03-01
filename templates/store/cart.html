@@ -1,1 +1,30 @@
-<h3>cart</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <form method="POST">
+        {% if user.is_authenticated %}
+            <!-- Hello {{user.username}} -->
+            {% for item in items %}
+                {{ item.title }}
+                <br>
+                Price: {{ item.price }}
+                <div class="view overlay">
+                    <img src="{{ item.image.url }}" class="card-img-top"  alt="">
+                    <a  href="{% url 'add-to-cart' item.id %}" class="btn btn-primary btn-md my-0 p">Add to cart
+                        <i class="fas fa-shopping-cart ml-1"></i>
+                    </a>
+                </div>
+               
+            {% endfor %}
+
+    
+
+        {% else %}
+            You are not loggedin
+        {% endif %}
