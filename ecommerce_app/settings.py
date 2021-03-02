@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'store',
+    'cart',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +126,7 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = 'media'
 
+CART_SESSION_ID = 'keranjang'
 
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='login'

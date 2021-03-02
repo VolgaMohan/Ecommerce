@@ -10,18 +10,6 @@
     <form method="POST">
         {% if user.is_authenticated %}
             <!-- Hello {{user.username}} -->
-            {% for item in items %}
-                {{ item.title }}
-                <br>
-                Price: {{ item.price }}
-                <div class="view overlay">
-                    <img src="{{ item.image.url }}" class="card-img-top"  alt="">
-                    <!-- <button type="submit">Add to Cart</button>
-                    <button type="submit">Buy Now</button> -->
-                </div>
-               
-            {% endfor %}
-    
 
         {% else %}
             You are not loggedin

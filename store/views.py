@@ -1,56 +1,55 @@
-from django.shortcuts import render
-from .models import Item,OrderItem,Order
+from .models import Category, Product
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-
-from django.views.generic import ListView, DetailView, View
+from django.shortcuts import render, get_object_or_404
+from cart.forms import CartAddProductForm
+# from .models import Item,OrderItem,Order,
 # Create your views here.
 
-def home(request):
-    context= {
-        'items': Item.objects.all()
-    }
-    print(context)
-    return render(request,'registration/home.html',context)    
+def product_list(request, category_slug=None):
+	category = None
+	categories = Category.objects.all()
+	products = Product.objects.filter(available=True)
+	if category_slug:
+		category = get_object_or_404(Category, slug=category_slug)
+		products = Product.objects.filter(category=category)
 
-# def add_to_cart(request, item_id):
-#     item = Item.objects.get(pk=item_id)
-#     order_item = OrderItem.objects.create(Item=Item)
-#     order_qs = Order.objects.filter(user=request.user, ordered=False)
-#     if order_qs.exists():
-#         order = order_qs[0]
-#         if order.items.filter(item__slug=item.slug).exists():
-#             order_item.quantity += 1
-#             order_item.save()
-#             # messages.info(request, "This item quantity was updated.")
-#             # return redirect("order-summary")
-#         else:
-#             order= Order.objects.create(user=request.user)
-#             order.items.add(order_item)
-#             # messages.info(request, "This item was added to your cart.")
-#             return redirect("store:product",slug=slug)
-
-#     else:
-
-#         ordered_date = timezone.now()
-#         order = Order.objects.create(
-#             user=request.user, ordered_date=ordered_date)
-#         order.items.add(order_item)
-#         messages.info(request, "This item was added to your cart.")
-#         return redirect("product-detail", slug=item.slug)
-
-@login_required
-def add_to_cart(request,item_id):
-    item = get_object_or_404(Item, pk=item_id)
-    cart= OrderItem.objects.get_or_create(user=request.user)
-    order,created = OrderItem.objects.get_or_create(item=item,cart=cart)
-    order.quantity += 1
-    order.save()
-    messages.success(request, "Cart updated!")
-    # return redirect('cart')
-    return render(request,'store/cart.html')
+	context = {
+		'category': category,
+		'categories': categories,
+		'products': products
+	}
+	return render(request, 'store/product/list.html', context)
 
 
-def checkout(request):
-    context={}
-    return render(request,'store/checkout.html')
+def product_detail(request, id, slug):
+	product = get_object_or_404(Product, id=id, slug=slug, available=True)
+	cart_product_form = CartAddProductForm()
+	context = {
+		'product': product,
+		'cart_product_form': cart_product_form
+	}
+	return render(request, 'store/product/detail.html', context)
+
+
+# def home(request):
+#     context= {
+#         'items': Item.objects.all()
+#     }
+#     print(context)
+#     return render(request,'registration/home.html',context)    
+
+# @login_required
+# def add_to_cart(request,item_id):
+#     item = get_object_or_404(Item, pk=item_id)
+#     cart= OrderItem.objects.get_or_create(user=request.user)
+#     order,created = OrderItem.objects.get_or_create(item=item,cart=cart)
+#     order.quantity += 1
+#     order.save()
+#     messages.success(request, "Cart updated!")
+#     # return redirect('cart')
+#     return render(request,'store/cart.html')
+
+
+# def checkout(request):
+#     context={}
+#     return render(request,'store/checkout.html')
