@@ -29,17 +29,18 @@ def order_create(request):
     return render(request, 'orders/order/create.html', context = context)
 
 def buy_now(request, product_id):
-	if request.method == 'POST':
-		product = get_object_or_404(Product, id=product_id)
-		form = OrderCreateForm(request.POST)
-		if form.is_valid():
-			order = form.save()
-		return render(request, 'orders/order/created.html', {'order': order})
-	else:
-		product = get_object_or_404(Product, id=product_id)
-		form = OrderCreateForm()
-		context = {
-		'form':form,
-		'product':product
-		}
-	return render(request, 'orders/order/create.html', context = context)
+    if request.method == 'POST':
+        product = get_object_or_404(Product, id=product_id)
+        form = OrderCreateForm(request.POST)
+        if form.is_valid():
+            order = form.save()
+        return render(request, 'orders/order/created.html', {'order': order})
+    else:
+        product = get_object_or_404(Product, id=product_id)
+        print(product)
+        form = OrderCreateForm()
+        context = {
+        'form':form,
+        'product':product
+        }
+        return render(request, 'orders/order/create.html', context = context)
